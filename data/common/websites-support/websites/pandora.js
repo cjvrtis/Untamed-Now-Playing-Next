@@ -10,27 +10,25 @@ PandoraTrackListener.prototype.findSelector = function() {
 };
 
 PandoraTrackListener.prototype.scrapPlayData = function() {
-    this.artistName = $('.playerBarArtist').text();
-    this.trackName = $('.playerBarSong').text();
+    this.artistName = $('[data-qa="playing_artist_name"]').text();
+    this.trackName = $('[data-qa="playing_track_title"]').children('div').children('div').text();
     return true;
 };
 
 PandoraTrackListener.prototype.scrapAlbumName = function() {
-    return $('.playerBarAlbum').text();
+    return $('[data-qa="playing_album_name"]').text();
 };
 
 PandoraTrackListener.prototype.scrapAlbumArt = function() {
-    return $('.playerBarArt').attr('src');
+    return $('[data-qa="album_active_image"]').css('background-image').replace('url(','').replace(')','').replace(/\"/gi, "");
 };
 
 PandoraTrackListener.prototype.scrapUrl = function() {
-    return $('.playerBarSong').attr('href');
+    return $('[data-qa="playing_track_title"]').attr('href');
 };
 
 PandoraTrackListener.prototype.scrapDuration = function() {
-    let remainingTime = $('.remainingTime').text();
-    remainingTime = remainingTime.substr(1, remainingTime.length);
-    return window.UNPCommon.secToHms(window.UNPCommon.hmsToSec(remainingTime) + window.UNPCommon.hmsToSec($('.elapsedTime').text()));
+    return $('[data-qa="remaining_time"]').text();
 };
 
 window.UNPCommon.runTrackListenerInterval(new PandoraTrackListener());
